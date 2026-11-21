@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/vijayendrashrimant/PulseBoost/blob/master/PulseBoost.ico" alt="PulseBoost Logo" width="96" height="96" />
+  <img src="https://github.com/vijayendrashrimant/PulseBoost/blob/master/PulseBoost.png" alt="PulseBoost Logo" width="96" height="96" />
   <h1>⚡ PulseBoost</h1>
   <p><strong>Open-Source PC Performance, Gaming & Local AI Booster for Windows 10/11</strong></p>
   <p><em>Reclaim RAM & VRAM, eliminate frame stutters, and boost local LLMs (Ollama, LM Studio) with one click — zero telemetry, zero registry gimmicks.</em></p>
