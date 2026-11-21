@@ -5,9 +5,9 @@
   <p><em>Reclaim RAM & VRAM, eliminate frame stutters, and boost local LLMs (Ollama, LM Studio) with one click — zero telemetry, zero registry gimmicks.</em></p>
 
   <p>
-    <a href="https://github.com"><img src="https://shields.io" alt="Latest Release" /></a>
-    <a href="https://github.com"><img src="https://shields.io" alt="GitHub Stars" /></a>
-    <a href="https://github.com"><img src="https://shields.io" alt="MIT License" /></a>
+    <a href="https://github.com/vijayendrashrimant/PulseBoost/releases"><img src="https://shields.io" alt="Latest Release" /></a>
+    <a href="https://github.com/vijayendrashrimant/PulseBoost"><img src="https://shields.io" alt="GitHub Stars" /></a>
+    <a href="https://github.com/vijayendrashrimant/PulseBoost/blob/master/LICENSE"><img src="https://shields.io" alt="MIT License" /></a>
     <img src="https://shields.io" alt="Windows 10/11" />
     <img src="https://shields.io" alt=".NET 8.0" />
   </p>
