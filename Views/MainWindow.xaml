@@ -1,0 +1,282 @@
+<ui:FluentWindow x:Name="tooltip" x:Class="PulseBoost.Views.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:vm="clr-namespace:PulseBoost.ViewModels"
+                 Title="PulseBoost"
+                 Width="980" Height="710"
+                 MinWidth="860" MinHeight="620"
+                 WindowStartupLocation="CenterScreen"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica" Icon="/Assets/PulseBoost.ico">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Title="PulseBoost — Open Source PC, RAM &amp; Local AI Booster" Grid.Row="0">
+            <ui:TitleBar.Icon>
+                <ui:SymbolIcon Symbol="Flash24" />
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <TabControl Grid.Row="1" Margin="16,4,16,16">
+            <!-- TAB 1: PERFORMANCE, RAM & AI BOOST -->
+            <TabItem Header="⚡ Performance &amp; RAM Boost">
+                <Grid Margin="8,10,8,8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- 1. Hero Boost Control Card -->
+                    <ui:Card Grid.Row="0" Padding="22" Margin="0,0,0,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding StatusHeadline}" FontSize="24" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding StatusSubtitle}" Opacity="0.75" Margin="0,4,0,10" />
+                                <TextBlock Text="{Binding MetricsSummary}" FontSize="12" Foreground="#4CC2FF" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <ui:Button Content="Boost RAM"
+                                               Command="{Binding CleanRamOnlyCommand}"
+                                               Icon="{ui:SymbolIcon Memory16}"
+                                               Height="48" Padding="18,0" FontSize="14" FontWeight="SemiBold"
+                                               Margin="0,0,10,0" />
+                                    <ui:Button Content="{Binding BoostButtonText}"
+                                               Command="{Binding ToggleBoostCommand}"
+                                               Appearance="Primary"
+                                               Icon="{ui:SymbolIcon Flash24}"
+                                               Height="48" Padding="24,0" FontSize="15" FontWeight="SemiBold" />
+                                </StackPanel>
+
+                                <CheckBox Content="Auto-boost when watched games or AI launch"
+                                          IsChecked="{Binding IsAutoDetectEnabled}"
+                                          Margin="0,10,0,0" HorizontalAlignment="Right" />
+                                <CheckBox Content="Minimize to system tray on close"
+                                          IsChecked="{Binding MinimizeToTrayOnClose}"
+                                          Margin="0,4,0,0" HorizontalAlignment="Right" />
+                            </StackPanel>
+                        </Grid>
+                    </ui:Card>
+
+                    <!-- 2. Live Telemetry Strip (CPU & RAM Gauges + Auto-RAM Threshold) -->
+                    <Grid Grid.Row="1" Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="1.3*" />
+                        </Grid.ColumnDefinitions>
+
+                        <ui:Card Grid.Column="0" Padding="16" VerticalAlignment="Stretch">
+                            <StackPanel VerticalAlignment="Center">
+                                <Grid Margin="0,0,0,6">
+                                    <TextBlock Text="CPU Load" FontWeight="SemiBold" Opacity="0.85" />
+                                    <TextBlock Text="{Binding CpuUsageText}" HorizontalAlignment="Right" FontWeight="SemiBold" Foreground="#4CC2FF" />
+                                </Grid>
+                                <ProgressBar Value="{Binding CpuUsagePercent}" Maximum="100" Height="8" />
+                            </StackPanel>
+                        </ui:Card>
+
+                        <ui:Card Grid.Column="2" Padding="16">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,6">
+                                    <TextBlock Text="System RAM Usage" FontWeight="SemiBold" Opacity="0.85" />
+                                    <TextBlock Text="{Binding RamUsageText}" HorizontalAlignment="Right" FontWeight="SemiBold" Foreground="#6CCB5F" />
+                                </Grid>
+                                <ProgressBar Value="{Binding RamUsagePercent}" Maximum="100" Height="8" Margin="0,0,0,10" />
+                                <Grid>
+                                    <CheckBox Content="Auto-clean RAM when usage exceeds:"
+                                              IsChecked="{Binding AutoCleanRamOnHighUsage}"
+                                              FontSize="12" VerticalAlignment="Center" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Slider Minimum="60" Maximum="95" TickFrequency="5" IsSnapToTickEnabled="True"
+                                                Value="{Binding AutoCleanRamThresholdPercent}" Width="90" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding AutoCleanRamThresholdPercent, StringFormat={}{0}%}"
+                                                   FontWeight="SemiBold" FontSize="12" Margin="6,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </ui:Card>
+                    </Grid>
+
+                    <!-- 3. Transparent Profile & Auto-Watchlist Controls -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left: Profile & Background App Checklist -->
+                        <ui:Card Grid.Column="0" VerticalAlignment="Stretch" VerticalContentAlignment="Top" Padding="18">
+                            <StackPanel>
+                                <TextBlock Text="Boost Profile" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <ComboBox SelectedIndex="{Binding SelectedModeIndex}" Margin="0,0,0,14">
+                                    <ComboBoxItem Content="Gaming Mode (Low Latency &amp; High FPS)" />
+                                    <ComboBoxItem Content="Local AI &amp; Heavy Work (Max RAM/VRAM)" />
+                                </ComboBox>
+
+                                <TextBlock Text="Checked apps close during boost &amp; reopen afterward:"
+                                           FontSize="12" Opacity="0.7" Margin="0,0,0,8" />
+
+                                <ItemsControl ItemsSource="{Binding BackgroundTargets}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding ShouldCloseOnBoost}"
+                                                      Command="{Binding DataContext.SaveSettingsCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      Margin="0,4">
+                                                <TextBlock Text="{Binding FriendlyName}" />
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ui:Card>
+
+                        <!-- Right: Auto-Detection Watchlist -->
+                        <ui:Card Grid.Column="2" VerticalAlignment="Stretch" VerticalContentAlignment="Top" Padding="18">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="0,0,0,6">
+                                    <TextBlock Text="Auto-Boost Watchlist" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                    <ui:Button Content="+ Add .exe" Command="{Binding AddWatchedAppCommand}" HorizontalAlignment="Right" />
+                                </Grid>
+
+                                <TextBlock Grid.Row="1" Text="Boost triggers automatically when any listed app launches:"
+                                           Opacity="0.7" FontSize="12" Margin="0,0,0,10" />
+
+                                <ListBox Grid.Row="2" ItemsSource="{Binding WatchedApps}" MaxHeight="220">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="2">
+                                                <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                                <ui:Button Content="Remove"
+           Appearance="Transparent"
+           Padding="8,2" FontSize="11"
+           HorizontalAlignment="Right"
+           Command="{Binding DataContext.RemoveWatchedAppCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+           CommandParameter="{Binding}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </ui:Card>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 2: SAFE DISK & CACHE SWEEPER -->
+            <TabItem Header="🧹 Safe Disk Sweeper">
+                <Grid Margin="8,12,8,8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <ui:Card Grid.Row="0" Padding="20" Margin="0,0,0,14">
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Safe Junk &amp; Cache Sweeper" FontSize="20" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding CleanerStatusText}" Opacity="0.75" Margin="0,4,0,0" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <ui:Button Content="Scan Junk" Command="{Binding ScanJunkCommand}"
+                                           Margin="0,0,10,0" Height="40" Padding="18,0" />
+                                <ui:Button Content="Clean Selected" Command="{Binding CleanJunkCommand}"
+                                           Appearance="Primary" Icon="{ui:SymbolIcon Delete24}"
+                                           Height="40" Padding="18,0" />
+                            </StackPanel>
+                        </Grid>
+                    </ui:Card>
+
+                    <ui:Card Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Top" Padding="18">
+                        <ItemsControl ItemsSource="{Binding CleanTargets}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#22FFFFFF" BorderThickness="0,0,0,1" Padding="0,10">
+                                        <Grid>
+                                            <CheckBox IsChecked="{Binding IsSelected}" VerticalAlignment="Center">
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
+                                                    <TextBlock Text="{Binding Description}" FontSize="12" Opacity="0.7" />
+                                                </StackPanel>
+                                            </CheckBox>
+                                            <TextBlock Text="{Binding FormattedSize}"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                       FontWeight="SemiBold" Foreground="#4CC2FF" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ui:Card>
+                </Grid>
+            </TabItem>
+
+            <!-- TAB 3: PLAIN-ENGLISH STARTUP MANAGER -->
+            <TabItem Header="🚀 Startup Manager">
+                <Grid Margin="8,12,8,8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <ui:Card Grid.Row="0" Padding="20" Margin="0,0,0,14">
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Windows Startup Apps" FontSize="20" FontWeight="SemiBold" />
+                                <TextBlock Text="Disable unnecessary programs that slow down Windows boot and eat background RAM." Opacity="0.75" Margin="0,4,0,0" />
+                            </StackPanel>
+                            <ui:Button Content="Refresh List" Command="{Binding RefreshStartupItemsCommand}" HorizontalAlignment="Right" Height="40" Padding="18,0" />
+                        </Grid>
+                    </ui:Card>
+
+                    <ui:Card Grid.Row="1" VerticalAlignment="Stretch" VerticalContentAlignment="Top" Padding="18">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding StartupItems}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="#22FFFFFF" BorderThickness="0,0,0,1" Padding="0,10">
+                                            <Grid>
+                                                <StackPanel VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
+                                                    <TextBlock Text="{Binding FriendlyImpactLabel}" FontSize="12" Foreground="#4CC2FF" Margin="0,2,0,0" />
+                                                </StackPanel>
+                                                <ui:ToggleSwitch IsChecked="{Binding IsEnabled}"
+                                                                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                                 Command="{Binding DataContext.ToggleStartupItemCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                 CommandParameter="{Binding}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </ui:Card>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</ui:FluentWindow>
