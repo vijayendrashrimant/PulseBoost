@@ -59,7 +59,7 @@ Most "PC Boosters" are closed-source bloatware filled with ads, fake registry cl
 
 No `.NET` runtime installation or command-line setup required:
 
-1. Head over to the [**Releases**](https://github.com) page.
+1. Head over to the [**Releases**](https://github.com/vijayendrashrimant/PulseBoost/releases) page.
 2. Download **`PulseBoost-Setup.exe`** (Windows Installer) or **`PulseBoost.exe`** (Portable Single-File).
 3. Launch **PulseBoost** and click **Activate Boost** or **Boost RAM**.
 
